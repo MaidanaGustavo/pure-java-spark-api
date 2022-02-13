@@ -23,7 +23,7 @@ public class UserController {
       this._userService = _userService;
     }
 
-  public  ResponseModel<User> index(Request req,Response res){
+  public ResponseModel<User> index(Request req,Response res){
     ResponseModel<User> resp ;
 
     try{

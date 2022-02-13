@@ -81,13 +81,13 @@ public class UserRepository  implements IUserRepository{
           userMapper.updateNameUser(userMonted);
         }
         
-        // if(userUpdate.getEmail()!=null){
-        //   userMapper.updateEmailUser(userUpdate.getEmail(), id);
-        // } 
+        if(userUpdate.getEmail()!=null){
+          userMapper.updateEmailUser(userMonted);
+        } 
         
-        // if(userUpdate.getPassword()!=null){
-        //   userMapper.updateEmailUser(userUpdate.getPassword(), id);
-        // }
+        if(userUpdate.getPassword()!=null){
+          userMapper.updateEmailUser(userMonted);
+        }
         user = userMapper.findById(id);
         sqlSession.commit();
       }catch (Exception e){

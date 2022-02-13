@@ -1,5 +1,7 @@
 package spk;
 import static spark.Spark.*;
+
+import spk.resources.PostResource;
 import spk.resources.UserResource;
 /**
  * Hello world!
@@ -7,6 +9,8 @@ import spk.resources.UserResource;
  */
 public class App 
 {
+    private final static String basePath = "myapi/v1";
+
     public static void main( String[] args )
     {
         before((request,response)->{
@@ -16,7 +20,8 @@ public class App
         
         get("/", (req, res) -> "Api is working!");
         
-        UserResource.configureRoutes("myapi/v1");
+        UserResource.configureRoutes(basePath);
+        PostResource.configureRoutes(basePath);
         
     }
 }

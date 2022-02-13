@@ -32,9 +32,9 @@ public interface UserMapper {
 
 
   @Update("UPDATE user SET email = #{email} WHERE id = #{id}")
-  void updateEmailUser(String email,Integer id);
+  void updateEmailUser(User user);
 
 
   @Update("UPDATE user SET password = #{password} WHERE id = #{id}")
-  void updatePasswordUser(String password,Integer id);
+  void updatePasswordUser(User user);
 }

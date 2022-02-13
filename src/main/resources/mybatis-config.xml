@@ -19,7 +19,7 @@
 
   <mappers>
     <mapper class='spk.mapper.UserMapper'/>
-    
+    <mapper class='spk.mapper.PostMapper'/>
   </mappers>
 
 </configuration>
