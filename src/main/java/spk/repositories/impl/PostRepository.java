@@ -42,7 +42,7 @@ public class PostRepository implements IPostRepository{
     try{
 
       PostMapper postMapper = sqlSession.getMapper(PostMapper.class);
-      postMapper.insertPost(postInserted);
+      postMapper.insertPost(new Post(postInserted));
       sqlSession.commit();
       post  = postMapper.lastPostInserted();
 
@@ -89,6 +89,8 @@ public class PostRepository implements IPostRepository{
         postMapper.updateDescriptionPost(new Post(id,postUpdated.getTitle(),postUpdated.getDescription(),postUpdated.getIdUser()));
       }
 
+      postMapper.updateIsEdit(id);
+
       post  = postMapper.findById(id);
     }catch(Exception e){
       //
@@ -109,7 +111,7 @@ public class PostRepository implements IPostRepository{
       postMapper.deletePost(id);
 
     }catch(Exception e){
-      //
+      System.out.println(e.getMessage());
     }finally{
       sqlSession.commit();
       sqlSession.close();

@@ -63,6 +63,7 @@ public class PostService implements IPostService {
 
       post = pRepository.update(updateRequestDTO, postId);
     } catch (Exception e) {
+      System.out.println(e.getMessage());
       throw new ApiErrorException(500,"Erro ao atualizar Post");
     }
     return post;
@@ -78,7 +79,10 @@ public class PostService implements IPostService {
         throw new ApiErrorException(404,"Post não encontrado!");
       }
       pRepository.delete(id);
+    } catch (ApiErrorException e) {
+      throw new ApiErrorException(e.getStatusCode(),e.getMessage());
     } catch (Exception e) {
+      System.out.println(e.getMessage());
       throw new ApiErrorException(500,"Erro ao deletar Post");
     }
   }

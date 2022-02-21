@@ -18,6 +18,8 @@ public class UserResource{
         post("",userController::save,gson::toJson);
         put("/:id", userController::update,gson::toJson);
         delete("/:id",userController::delete,gson::toJson);
+        get("/findbynickname/:nickname",userController::findByNickname,gson::toJson);
+        post("/login",userController::login,gson::toJson);
     });
 
   }

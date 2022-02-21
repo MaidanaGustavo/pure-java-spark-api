@@ -8,16 +8,17 @@ public class User implements Serializable{
   private String name;
   private String email;
   private String password;
-
+  private String nickname;
 
   public User() {
   }
 
-  public User(Integer id, String name, String email, String password) {
+  public User(Integer id, String name, String email, String password,String nickname ) {
     this.id = id;
     this.name = name;
     this.email = email;
     this.password = password;
+    this.nickname = nickname;
   }
 
   public Integer getId() {
@@ -51,6 +52,15 @@ public class User implements Serializable{
   public void setPassword(String password) {
     this.password = password;
   }
+
+  public String getNickname() {
+    return this.nickname;
+  }
+
+  public void setNickname(String nickname) {
+    this.nickname = nickname;
+  }
+
 
   public User id(Integer id) {
     setId(id);
@@ -95,6 +105,7 @@ public class User implements Serializable{
       ", name='" + getName() + "'" +
       ", email='" + getEmail() + "'" +
       ", password='" + getPassword() + "'" +
+      ", nickname '"+getNickname()+"'"+
       "}";
   }
 

@@ -98,7 +98,7 @@ public class PostController {
       Integer id = Integer.parseInt(req.params("id"));
       postService.delete(id);  
       response = new ResponseModel<Post>(203,null,"Sucesso!");
-      res.status(203);
+      res.status(200);
     } catch (ApiErrorException e) {
       response = new ResponseModel<Post>(e.getStatusCode(),null,e.getMessage());
     }

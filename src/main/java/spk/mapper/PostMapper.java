@@ -10,24 +10,29 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
 import spk.domain.Post;
-import spk.dto.Post.PostRequestDTO;
 
 public interface PostMapper {
   
-  @Insert("INSERT INTO post (title,description,id_user) VALUES (#{title},#{description},#{idUser})")
-  void insertPost(PostRequestDTO postRequestDTO);
+  @Insert("INSERT INTO post (title,description,id_user,created_at) VALUES (#{title},#{description},#{idUser},#{createdAt})")
+  void insertPost(Post post);
 
   @Results({
-    @Result(property = "idUser" , column = "id_user")
+    @Result(property = "idUser" , column = "id_user"),
+    @Result(property = "createdAt" , column = "created_at")
   })
   @Select("select * from post")
   List<Post> getAllPost();
   
+  @Results({
+    @Result(property = "idUser" , column = "id_user"),
+    @Result(property = "createdAt" , column = "created_at")
+  })
   @Select("select * from post where id=#{id}")
   Post findById(Integer id);
   
   @Results({
-    @Result(property = "idUser" , column = "id_user")
+    @Result(property = "idUser" , column = "id_user"),
+    @Result(property = "createdAt" , column = "created_at")
   })
   @Select("SELECT * FROM post WHERE id= LAST_INSERT_ID() ")
   Post lastPostInserted();
@@ -41,10 +46,14 @@ public interface PostMapper {
 
   @Update("UPDATE post SET description = #{description} WHERE id = #{id}")
   void updateDescriptionPost(Post post);
+
+  @Update("UPDATE post SET isEdited = 1 WHERE id = #{id}")
+  void updateIsEdit(Integer id);
   
   @Results({
-    @Result(property = "idUser" , column = "id_user")
+    @Result(property = "idUser" , column = "id_user"),
+    @Result(property = "createdAt" , column = "created_at")
   })
-  @Select("select * from post where id_user=#{idUser} ")
+  @Select("select * from post where id_user=#{idUser} order by id desc ")
   List<Post> listPostByUser(Integer idUser);
 }

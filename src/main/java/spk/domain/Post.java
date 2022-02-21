@@ -2,22 +2,53 @@ package spk.domain;
 
 import java.util.Objects;
 
+import spk.dto.Post.PostRequestDTO;
+
+import java.util.Date;
+
 public class Post {
   
   private Integer id;
   private String title;
   private String description;
   private Integer idUser;
+  private Date createdAt;
+  private Integer isEdited;
 
 
   public Post() {
   }
+
+  public Post(Integer id, String title, String description, Integer idUser,Date createdAt, Integer isEdited) {
+    this.id = id;
+    this.title = title;
+    this.description = description;
+    this.idUser = idUser;
+    this.createdAt = createdAt;
+    this.isEdited = isEdited;
+  }
+
+  public Post(Integer id, String title, String description, Integer idUser,Date createdAt) {
+    this.id = id;
+    this.title = title;
+    this.description = description;
+    this.idUser = idUser;
+    this.createdAt = createdAt;
+  }
+
 
   public Post(Integer id, String title, String description, Integer idUser) {
     this.id = id;
     this.title = title;
     this.description = description;
     this.idUser = idUser;
+  }
+
+  public Post(PostRequestDTO postRequestDTO){
+    this.title = postRequestDTO.getTitle();
+    this.description = postRequestDTO.getDescription();
+    this.idUser = postRequestDTO.getIdUser();
+    this.createdAt = new Date();
   }
 
   public Integer getId() {
@@ -47,7 +78,22 @@ public class Post {
   public Integer getIdUser() {
     return this.idUser;
   }
+  
+  public Date getCreatedAT(){
+    return this.createdAt;
+  }
 
+  public void setCreatedAt(Date createdAt){
+    this.createdAt = createdAt;
+  }
+
+  public Integer getIsEdited(){
+    return this.isEdited;
+  }
+
+  public void setIsEdited(Integer isEdited){
+    this.isEdited = isEdited;
+  }
   public void setIdUser(Integer idUser) {
     this.idUser = idUser;
   }

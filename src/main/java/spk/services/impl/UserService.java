@@ -1,8 +1,11 @@
 package spk.services.impl;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
+
+
 import spk.domain.User;
 import spk.dto.User.UserRequestDTO;
+import spk.dto.User.UserRequestLoginDTO;
 import spk.exceptions.ApiErrorException;
 import spk.repositories.interfaces.IUserRepository;
 import spk.services.interfaces.IUserService;
@@ -23,13 +26,22 @@ public class UserService implements IUserService {
     @Override
     public User createUser(User userInsert) throws ApiErrorException , NoSuchAlgorithmException {
         User user = null;
+        
+        
 
         if(userInsert!=null){
+            
+            System.out.println(userInsert);
 
             if(!this.validUserFields(userInsert)){
-                throw new ApiErrorException(400,"Há campos obrigatórios faltando.");    
+                throw new ApiErrorException(400,"Há campos obrigatórios faltando."); 
             }
-          
+            User userExists  = _userRepository.findByNickname(userInsert.getNickname());
+
+            if(userExists!=null){
+                throw new ApiErrorException(403, "Nickname já cadastrado!.");
+            }
+            
             String pss  = this.hashPassword(userInsert.getPassword());
             userInsert.setPassword(pss);
             
@@ -57,7 +69,6 @@ public class UserService implements IUserService {
 
     @Override
     public String hashPassword(String pass) throws NoSuchAlgorithmException {
-        // TODO
         String hashString;
         HashCreator hash = new HashCreator();
         hashString = hash.createSHAHash(pass);
@@ -108,5 +119,47 @@ public class UserService implements IUserService {
             return false;
         }
         
+    }
+
+    @Override
+    public User findByNickname(String nickname) throws ApiErrorException {
+        User user = null;
+        if(nickname==null){
+            throw new ApiErrorException(400,"O nickname precisa ser válido!");
+        }
+        user = _userRepository.findByNickname(nickname);
+        
+        if(user==null){
+            throw new ApiErrorException(404,"Usuário não encontrado");
+        }
+        
+        return user;
+    }
+
+    @Override
+    public Boolean loginUser(UserRequestLoginDTO userRequestLoginDTO) throws ApiErrorException, NoSuchAlgorithmException {
+             
+        if(userRequestLoginDTO.getNickname()==null || userRequestLoginDTO.getPassword()==null){
+            throw new ApiErrorException(400,"Há campos obrigatórios faltando!");
+        }
+        
+        User userExists = _userRepository.findByNickname(userRequestLoginDTO.getNickname());
+        
+        if(userExists==null){
+            throw new ApiErrorException(404,"Usuário não encontrado!");
+        }
+
+
+        String hashPassword = hashPassword(userRequestLoginDTO.getPassword());
+        userRequestLoginDTO.setPassword(hashPassword);
+        
+        User userLogin = _userRepository.login(userRequestLoginDTO);
+
+        if(userLogin==null){
+            throw new ApiErrorException(401,"Senha incorreta!");
+        }
+
+
+        return true;
     }
 }

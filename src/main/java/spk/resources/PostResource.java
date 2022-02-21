@@ -14,12 +14,13 @@ public class PostResource {
 
   public static void configureRoutes(String basePath){
 
+  
     path(basePath+"/posts",()->{
         get("",postController::index,gson::toJson);
         get("/:id",postController::find,gson::toJson);
         post("",postController::save,gson::toJson);
-        put("/:id", postController::update,gson::toJson);
-        delete("/:id",postController::delete,gson::toJson);
+        put("/:id/", postController::update,gson::toJson);
+        delete("/:id/",postController::delete,gson::toJson);
         get("/user/:idUser",postController::listPostByUser,gson::toJson);
     });
 

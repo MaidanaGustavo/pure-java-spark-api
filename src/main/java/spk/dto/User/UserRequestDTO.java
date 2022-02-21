@@ -10,11 +10,12 @@ public class UserRequestDTO {
   private String name;
   private String email;
   private String password;
+  private String nickname;
 
   public UserRequestDTO() {
   }
 
-  public UserRequestDTO(String name, String email, String password) {
+  public UserRequestDTO(String name, String email, String password,String nickname) {
     this.name = name;
     this.email = email;
     this.password = password;
@@ -48,6 +49,15 @@ public class UserRequestDTO {
   public void setPassword(String password) {
     this.password = password;
   }
+
+  public String getNickname() {
+    return this.nickname;
+  }
+
+  public void setNickname(String nickname) {
+    this.nickname = nickname;
+  }
+
 
   public UserRequestDTO name(String name) {
     setName(name);
