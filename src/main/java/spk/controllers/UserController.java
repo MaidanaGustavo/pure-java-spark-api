@@ -181,9 +181,10 @@ public class UserController {
           .signWith(App.CHAVE)
           .compact();
 
-          LinkedHashMap<String,String> token = new LinkedHashMap<String,String>();
-          token.put("token", jwtToken);
-          data.add(token);
+          LinkedHashMap<String,String> retorno = new LinkedHashMap<String,String>();
+          retorno.put("token", jwtToken);
+          retorno.put("username",userRequestLoginDTO.getNickname());
+          data.add(retorno);
           
         resp = new ResponseModel<LinkedHashMap<String,String>>(200,data,"Login efetuado com sucesso!");
       }

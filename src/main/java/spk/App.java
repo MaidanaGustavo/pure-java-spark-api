@@ -2,7 +2,6 @@ package spk;
 import static spark.Spark.*;
 
 import java.nio.charset.StandardCharsets;
-import java.util.LinkedHashMap;
 
 import javax.crypto.SecretKey;
 
@@ -10,7 +9,7 @@ import com.google.gson.Gson;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
-import spk.exceptions.ApiErrorException;
+
 import spk.models.ResponseModel;
 import spk.resources.PostResource;
 import spk.resources.UserResource;
@@ -34,11 +33,15 @@ public class App
         before((request,response)->{
             response.header("Content-Type", "application/json");
             response.type("application/json");
-            
+            response.header("Access-Control-Allow-Origin", "*");
+            System.out.println(request.uri());
             Boolean isLoginRoute = request.uri().equalsIgnoreCase("/myapi/v1/users/login") ;
             Boolean isRegisterUserRoute = (request.uri().equalsIgnoreCase("/myapi/v1/users") && request.requestMethod().equalsIgnoreCase("POST")) ;
-
-            if( !(isLoginRoute || isRegisterUserRoute)){
+            Boolean isFindByNickname  = request.uri().contains("/myapi/v1/users/findbynickname/");
+            System.out.println(isFindByNickname);
+            System.out.println(request.uri());
+        
+            if( !(isLoginRoute || isRegisterUserRoute || request.requestMethod().equalsIgnoreCase("OPTIONS") || isFindByNickname) ){
                 String token = request.headers("bearer");
                 
                 try {
@@ -57,8 +60,6 @@ public class App
         });
         
         after((request,response)->{
-                response.header(
-                "Access-Control-Allow-Origin", "*");
 
                 response.header(
                 "Access-Control-Allow-Credentials", "true");
@@ -84,17 +85,19 @@ public class App
 
         options("/*", (request,response)->{
 
-    	    String accessControlRequestHeaders = request.headers("Access-Control-Request-Headers");
+            String accessControlRequestHeaders = request.headers("Access-Control-Request-Headers");
     	    if (accessControlRequestHeaders != null) {
-    	        response.header("Access-Control-Allow-Headers", accessControlRequestHeaders);
+    	        response.header("Access-Control-Allow-Headers", "*");
     	    }
 
     	    String accessControlRequestMethod = request.headers("Access-Control-Request-Method");
     	    if(accessControlRequestMethod != null){
-    		response.header("Access-Control-Allow-Methods", accessControlRequestMethod);
+    		response.header("Access-Control-Allow-Methods", "*");
     	    }
 
+            response.status(200);
     	    return "OK";
+           
     	});  
         
         UserResource.configureRoutes(basePath);
