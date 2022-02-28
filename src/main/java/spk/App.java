@@ -11,6 +11,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 
 import spk.models.ResponseModel;
+import spk.resources.PasswordChangeResource;
 import spk.resources.PostResource;
 import spk.resources.UserResource;
 /**
@@ -40,8 +41,13 @@ public class App
             Boolean isFindByNickname  = request.uri().contains("/myapi/v1/users/findbynickname/");
             System.out.println(isFindByNickname);
             System.out.println(request.uri());
-        
-            if( !(isLoginRoute || isRegisterUserRoute || request.requestMethod().equalsIgnoreCase("OPTIONS") || isFindByNickname) ){
+            
+            Boolean isChangePassword  = request.uri().contains("/myapi/v1/passwordchange");
+            Boolean isVerifyToken  = request.uri().contains("/myapi/v1/passwordchange/verifyToken");
+
+            System.out.println(isFindByNickname);
+            System.out.println(request.uri());
+            if( !(isLoginRoute || isRegisterUserRoute || request.requestMethod().equalsIgnoreCase("OPTIONS") || isFindByNickname || isChangePassword || isVerifyToken)  ){
                 String token = request.headers("bearer");
                 
                 try {
@@ -102,6 +108,7 @@ public class App
         
         UserResource.configureRoutes(basePath);
         PostResource.configureRoutes(basePath);
+        PasswordChangeResource.configureRoutes(basePath);
         
     }
 }
